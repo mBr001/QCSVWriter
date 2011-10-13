@@ -16,7 +16,7 @@ limitations under the License.
 
 ===== Description =====
 
-C++ library for writing CSV files. Main purpose is write cell data in
-specified format (eg. date/time formating). It is intended to use with Qt4
-framework.
+C++ library for writing CSV files. Main purpose is write data into
+cells usign specific format (eg. date/time formating). It is intended to use
+with Qt4 framework upon which is build.
 
