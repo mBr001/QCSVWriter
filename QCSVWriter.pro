@@ -8,6 +8,8 @@ QT       -= gui
 
 TARGET = QCSVWriter
 TEMPLATE = lib
+# comment/uncomment to build dinamic/static library
+CONFIG += staticlib
 
 VERSION = 0.0.1
 
@@ -17,16 +19,6 @@ SOURCES += qcsvwriter.cpp
 
 HEADERS += qcsvwriter.h\
         QCSVWriter.h
-
-symbian {
-    MMP_RULES += EXPORTUNFROZEN
-    TARGET.UID3 = 0xE0A9C3B1
-    TARGET.CAPABILITY = 
-    TARGET.EPOCALLOWDLLDATA = 1
-    addFiles.sources = QCSVWriter.dll
-    addFiles.path = !:/sys/bin
-    DEPLOYMENT += addFiles
-}
 
 unix:!symbian {
     maemo5 {
