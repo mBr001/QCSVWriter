@@ -8,7 +8,7 @@
 
 #include "QCSVWriter.h"
 
-class CSVFILEWRITERSHARED_EXPORT CsvFileWriter : public QVector<QString> {
+class CSVFILEWRITERSHARED_EXPORT QCSVFileWriter : public QVector<QString> {
 protected:
     /** Column separator. */
     QChar _cellSeparator_;
@@ -21,8 +21,8 @@ protected:
     QLocale localeC;
 
 public:
-    CsvFileWriter();
-    CsvFileWriter(int columns);
+    QCSVFileWriter();
+    QCSVFileWriter(int columns);
     QChar cellSeparator() { return _cellSeparator_; }
     void close();
     QChar decimalSeparator() {return _decimalPoint_; }

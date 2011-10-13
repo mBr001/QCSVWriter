@@ -3,7 +3,7 @@
 
 #include <QStringList>
 
-CsvFileWriter::CsvFileWriter() :
+QCSVFileWriter::QCSVFileWriter() :
     QVector<QString>(),
     _cellSeparator_(','),
     _decimalPoint_('.'),
@@ -13,7 +13,7 @@ CsvFileWriter::CsvFileWriter() :
 {
 }
 
-CsvFileWriter::CsvFileWriter(int columns) :
+QCSVFileWriter::QCSVFileWriter(int columns) :
     QVector<QString>(columns),
     _cellSeparator_(','),
     _decimalPoint_('.'),
@@ -23,22 +23,22 @@ CsvFileWriter::CsvFileWriter(int columns) :
 {
 }
 
-void CsvFileWriter::close()
+void QCSVFileWriter::close()
 {
     file.close();
 }
 
-QFile::FileError CsvFileWriter::error() const
+QFile::FileError QCSVFileWriter::error() const
 {
     return file.error();
 }
 
-QString CsvFileWriter::errorString() const
+QString QCSVFileWriter::errorString() const
 {
     return file.errorString();
 }
 
-bool CsvFileWriter::open()
+bool QCSVFileWriter::open()
 {
     if (file.isOpen())
         file.close();
@@ -46,7 +46,7 @@ bool CsvFileWriter::open()
     return file.open(QFile::WriteOnly | QFile::Truncate);
 }
 
-const QString& CsvFileWriter::setAt(const int index, const double &value)
+const QString& QCSVFileWriter::setAt(const int index, const double &value)
 {
     QString cell(localeC.toString(value));
 
@@ -58,27 +58,27 @@ const QString& CsvFileWriter::setAt(const int index, const double &value)
     return (*this)[index] = cell;
 }
 
-const QString& CsvFileWriter::setAt(const int index, const qint64 value)
+const QString& QCSVFileWriter::setAt(const int index, const qint64 value)
 {
     return (*this)[index] = localeC.toString(value);
 }
 
-const QString& CsvFileWriter::setAt(const int index, const QDateTime &value)
+const QString& QCSVFileWriter::setAt(const int index, const QDateTime &value)
 {
     return (*this)[index] = value.toString("yyyy-MM-dd hh:mm:ss");
 }
 
-const QString& CsvFileWriter::setAt(const int index, const QString &value)
+const QString& QCSVFileWriter::setAt(const int index, const QString &value)
 {
     return (*this)[index] = value;
 }
 
-void CsvFileWriter::setFileName(QString name)
+void QCSVFileWriter::setFileName(QString name)
 {
     file.setFileName(name);
 }
 
-bool CsvFileWriter::write()
+bool QCSVFileWriter::write()
 {
     QStringList row;
     qint64 wsize;
