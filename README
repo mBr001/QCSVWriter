@@ -20,3 +20,12 @@ C++ library for writing CSV files. Main purpose is write data into
 cells usign specific format (eg. date/time formating). It is intended to use
 with Qt4 framework upon which is build.
 
+===== Usage =====
+
+This easiest way to incorporate this code into your project is add it as git
+submodule.
+
+ * cd into dir where you software id checked out
+ * type:
+   git submodule add git@github.com:pinkavaj/QCSVWriter.git
+
