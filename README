@@ -16,16 +16,40 @@ limitations under the License.
 
 ===== Description =====
 
-C++ library for writing CSV files. Main purpose is write data into
-cells usign specific format (eg. date/time formating). It is intended to use
-with Qt4 framework upon which is build.
+C++ library/wrapper for writing CSV files. File is writen row by row.
+Cell values are formated by default/user specified formaters.
+
+==== Example ====
+
+// Create CSV writer with 3 columns
+QCSVWriter csvFile(3);
+
+// Open CSV file for writing
+if (!csvFile.open("my_new_file.csv"))
+    return -1;
+
+// write header
+csvFile[0] = "date ";
+csvFile[1] = "column 1";
+csvFile[1] = "column 2";
+if (!csvFile.write())
+    return -1;
+
+// write data
+csvFile[0] = QDateTime.currentDateTime();
+csvFile[1] = 3.1415;
+csvFile[1] = 1234567;
+if (!csvFile.write())
+    return -1;
+
+csvFile.close();
 
 ===== Usage =====
 
 This easiest way to incorporate this code into your project is add it as git
 submodule.
 
- * cd into dir where you software id checked out
+ * cd into dir where you software is checked out
  * type:
    git submodule add git@github.com:pinkavaj/QCSVWriter.git
 

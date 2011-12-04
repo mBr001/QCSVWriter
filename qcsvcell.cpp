@@ -2,7 +2,7 @@
 
 QCSVCell::QCSVCell() :
     QString(),
-    _dateTimeFormat_("yyyy-MM-dd hh:mm:ss"),
+    _dateTimeFormat_(),
     _decimalPoint_('.'),
     localeC(QLocale::c())
 {
@@ -37,6 +37,9 @@ const QString& QCSVCell::operator=(const qint64 value)
 
 const QString& QCSVCell::operator=(const QDateTime &value)
 {
+    if (_dateTimeFormat_.isEmpty())
+        return QString::operator=(value.toString(Qt::ISODate));
+
     return QString::operator=(value.toString(_dateTimeFormat_));
 }
 
