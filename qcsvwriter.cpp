@@ -1,25 +1,19 @@
 #include "qcsvwriter.h"
 
-
 #include <QStringList>
 
 QCSVWriter::QCSVWriter() :
-    QVector<QString>(),
+    QVector<QCSVCell>(),
     _cellSeparator_(','),
-    _decimalPoint_('.'),
-    _dateTimeFormat_("yyyy-MM-dd hh:mm:ss"),
     file(),
-    hasRows(false),
-    localeC(QLocale::c())
+    hasRows(false)
 {}
 
 QCSVWriter::QCSVWriter(int columns) :
-    QVector<QString>(columns),
+    QVector<QCSVCell>(columns),
     _cellSeparator_(','),
-    _decimalPoint_('.'),
     file(),
-    hasRows(false),
-    localeC(QLocale::c())
+    hasRows(false)
 {}
 
 void QCSVWriter::close()
@@ -43,31 +37,10 @@ bool QCSVWriter::open()
     return file.open(QFile::WriteOnly | QFile::Truncate);
 }
 
-const QString& QCSVWriter::setAt(const int index, const double value)
+bool QCSVWriter::open(const QString &fileName)
 {
-    QString cell(localeC.toString(value));
-
-    if (!_decimalPoint_.isNull() &&
-            _decimalPoint_ != localeC.decimalPoint()) {
-        cell = cell.replace(localeC.decimalPoint(), _decimalPoint_);
-    }
-
-    return (*this)[index] = cell;
-}
-
-const QString& QCSVWriter::setAt(const int index, const qint64 value)
-{
-    return (*this)[index] = localeC.toString(value);
-}
-
-const QString& QCSVWriter::setAt(const int index, const QDateTime &value)
-{
-    return (*this)[index] = value.toString(_dateTimeFormat_);
-}
-
-const QString& QCSVWriter::setAt(const int index, const QString &value)
-{
-    return (*this)[index] = value;
+    setFileName(fileName);
+    return open();
 }
 
 void QCSVWriter::setFileName(QString name)
@@ -80,17 +53,21 @@ bool QCSVWriter::write()
     QStringList row;
 
     row.reserve(size());
-    for (QVector<QString>::iterator icells(begin());
+    for (QVector<QCSVCell>::iterator icells(begin());
          icells != end(); ++icells) {
+        const QString &val(*icells);
 
-        if (icells->contains(_cellSeparator_) ||
-                icells->contains("\"") ||
-                icells->contains("\n") ||
-                icells->contains("\r")) {
-            *icells = QString("\"%1\"").arg(icells->replace("\"", "\"\""));
+        if (val.contains(_cellSeparator_) ||
+                val.contains("\"") ||
+                val.contains("\n") ||
+                val.contains("\r")) {
+            QString s(val);
+            s.replace("\"", "\"\"");
+            row.append(QString("\"%1\"").arg(s));
         }
-        row.append(*icells);
-        icells->clear();
+        else
+            row.append(val);
+        (*icells).clear();
     }
 
     QString rowS(row.join(_cellSeparator_));

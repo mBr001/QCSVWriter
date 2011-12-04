@@ -15,10 +15,12 @@ VERSION = 0.0.1
 
 DEFINES += QCSVWRITER_LIBRARY
 
-SOURCES += qcsvwriter.cpp
+SOURCES += qcsvwriter.cpp \
+    qcsvcell.cpp
 
-HEADERS += qcsvwriter.h\
-        QCSVWriter.h
+HEADERS += qcsvwriter.h \
+    QCSVWriter.h \
+    qcsvcell.h
 
 unix:!symbian {
     maemo5 {

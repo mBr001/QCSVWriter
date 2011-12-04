@@ -8,16 +8,19 @@ QT       += testlib
 
 QT       -= gui
 
-TARGET = tst_qcsvfiletest
+TARGET = tst_qcsvwritertest
 CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-
-SOURCES += tst_qcsvfiletest.cpp \
-    ../src/qcsvfile.cpp
+SOURCES += tst_qcsvwritertest.cpp \
+    ../qcsvwriter.cpp \
+    ../qcsvcell.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 HEADERS += \
-    ../src/qcsvfile.h
+    ../qcsvwriter.h \
+    ../qcsvcell.h
+
+
