@@ -29,8 +29,7 @@ public:
 
     /** Set CSV cell to specified value converted to QString. */
     const QString& operator=(const int value) {
-        return (*this) = qint64(value);
-    }
+        return (*this) = qint64(value); }
 
     /** Set CSV cell to specified value converted to QString. */
     const QString& operator=(const long int value);

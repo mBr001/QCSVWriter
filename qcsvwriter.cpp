@@ -43,6 +43,20 @@ bool QCSVWriter::open(const QString &fileName)
     return open();
 }
 
+void QCSVWriter::setDateTimeFormat(const QString &format)
+{
+    for(QCSVWriter::iterator cell(begin()); cell != end(); ++cell) {
+        cell->setDateTimeFormat(format);
+    }
+}
+
+void QCSVWriter::setDecimalSeparator(const QChar separator)
+{
+    for(QCSVWriter::iterator cell(begin()); cell != end(); ++cell) {
+        cell->setDecimalSeparator(separator);
+    }
+}
+
 void QCSVWriter::setFileName(QString name)
 {
     file.setFileName(name);
