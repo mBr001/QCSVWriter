@@ -3,50 +3,47 @@
 
 #include <QStringList>
 
-QCSVFileWriter::QCSVFileWriter() :
+QCSVWriter::QCSVWriter() :
     QVector<QString>(),
     _cellSeparator_(','),
     _decimalPoint_('.'),
+    _dateTimeFormat_("yyyy-MM-dd hh:mm:ss"),
     file(),
-    firstRow(true),
+    hasRows(false),
     localeC(QLocale::c())
-{
-}
+{}
 
-QCSVFileWriter::QCSVFileWriter(int columns) :
+QCSVWriter::QCSVWriter(int columns) :
     QVector<QString>(columns),
     _cellSeparator_(','),
     _decimalPoint_('.'),
     file(),
-    firstRow(true),
+    hasRows(false),
     localeC(QLocale::c())
-{
-}
+{}
 
-void QCSVFileWriter::close()
+void QCSVWriter::close()
 {
     file.close();
 }
 
-QFile::FileError QCSVFileWriter::error() const
+QFile::FileError QCSVWriter::error() const
 {
     return file.error();
 }
 
-QString QCSVFileWriter::errorString() const
+QString QCSVWriter::errorString() const
 {
     return file.errorString();
 }
 
-bool QCSVFileWriter::open()
+bool QCSVWriter::open()
 {
-    if (file.isOpen())
-        file.close();
-    firstRow = true;
+    hasRows = false;
     return file.open(QFile::WriteOnly | QFile::Truncate);
 }
 
-const QString& QCSVFileWriter::setAt(const int index, const double &value)
+const QString& QCSVWriter::setAt(const int index, const double value)
 {
     QString cell(localeC.toString(value));
 
@@ -58,30 +55,29 @@ const QString& QCSVFileWriter::setAt(const int index, const double &value)
     return (*this)[index] = cell;
 }
 
-const QString& QCSVFileWriter::setAt(const int index, const qint64 value)
+const QString& QCSVWriter::setAt(const int index, const qint64 value)
 {
     return (*this)[index] = localeC.toString(value);
 }
 
-const QString& QCSVFileWriter::setAt(const int index, const QDateTime &value)
+const QString& QCSVWriter::setAt(const int index, const QDateTime &value)
 {
-    return (*this)[index] = value.toString("yyyy-MM-dd hh:mm:ss");
+    return (*this)[index] = value.toString(_dateTimeFormat_);
 }
 
-const QString& QCSVFileWriter::setAt(const int index, const QString &value)
+const QString& QCSVWriter::setAt(const int index, const QString &value)
 {
     return (*this)[index] = value;
 }
 
-void QCSVFileWriter::setFileName(QString name)
+void QCSVWriter::setFileName(QString name)
 {
     file.setFileName(name);
 }
 
-bool QCSVFileWriter::write()
+bool QCSVWriter::write()
 {
     QStringList row;
-    qint64 wsize;
 
     row.reserve(size());
     for (QVector<QString>::iterator icells(begin());
@@ -98,15 +94,13 @@ bool QCSVFileWriter::write()
     }
 
     QString rowS(row.join(_cellSeparator_));
-    if (!firstRow) {
+    if (hasRows) {
         rowS = QString("\r\n") + rowS;
-    }
-    firstRow = false;
+    } else
+        hasRows = true;
 
-    QByteArray array(rowS.toUtf8());
-    wsize = file.write(array);
-    if (wsize != array.size())
-        return false;
+    const QByteArray array(rowS.toUtf8());
+    qint64 wsize(file.write(array));
 
-    return true;
+    return (wsize == array.size());
 }

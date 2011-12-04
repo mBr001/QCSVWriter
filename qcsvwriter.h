@@ -1,5 +1,5 @@
-#ifndef CSVFILEWRITER_H
-#define CSVFILEWRITER_H
+#ifndef QCSVWRITER_H
+#define QCSVWRITER_H
 
 #include <QDateTime>
 #include <QFile>
@@ -8,42 +8,77 @@
 
 #include "QCSVWriter.h"
 
-class CSVFILEWRITERSHARED_EXPORT QCSVFileWriter : public QVector<QString> {
+class CSVWRITERSHARED_EXPORT QCSVWriter : public QVector<QString> {
 protected:
     /** Column separator. */
     QChar _cellSeparator_;
-    /** Decimal separator used in file for floating point numbers. */
+
+    /** Decimal separator used for floating point numbers formating. */
     QChar _decimalPoint_;
+
+    /** Define date/time format. */
+    QString _dateTimeFormat_;
+
     /** File to write CSV data. */
     QFile file;
-    bool firstRow;
+
+    /** Set to true if first row is writen into file. */
+    bool hasRows;
+
     /** C locale, used to convert numbers to strig etc. */
     QLocale localeC;
 
 public:
-    QCSVFileWriter();
-    QCSVFileWriter(int columns);
-    QChar cellSeparator() { return _cellSeparator_; }
+    QCSVWriter();
+
+    QCSVWriter(int columns);
+
+    QChar cellSeparator() {
+        return _cellSeparator_; }
+
     void close();
-    QChar decimalSeparator() {return _decimalPoint_; }
+
+    const QString& dateTimeFormat() {
+        return _dateTimeFormat_; }
+
+    QChar decimalSeparator() {
+        return _decimalPoint_; }
+
     QFile::FileError error() const;
+
     QString errorString() const;
+
     bool open();
-    const QString& setAt(const int index, const double &value);
+
+    const QString& setAt(const int index, const double value);
+
     const QString& setAt(const int index, const int value) {
         return setAt(index, qint64(value)); }
+
     const QString& setAt(const int index, const unsigned int value) {
         return setAt(index, qint64(value)); }
+
     const QString& setAt(const int index, const long int value) {
         return setAt(index, qint64(value)); }
+
     const QString& setAt(const int index, const qint64 value);
+
     const QString& setAt(const int index, const QDateTime &value);
+
     const QString& setAt(const int index, const QString &value);
-    void setCellSeparator(const QChar separator) { _cellSeparator_ = separator; }
-    void setDecimalSeparator(const QChar separator) { _decimalPoint_ = separator; }
+
+    void setCellSeparator(const QChar separator) {
+        _cellSeparator_ = separator; }
+
+    void setDateTimeFormat(const QString &dtFormat) {
+        _dateTimeFormat_ = dtFormat; }
+
+    void setDecimalSeparator(const QChar separator) {
+        _decimalPoint_ = separator; }
+
     void setFileName(QString name);
+
     bool write();
 };
 
-
-#endif // CSVFILEWRITER_H
+#endif // QCSVWRITER_H
