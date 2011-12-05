@@ -25,6 +25,11 @@ protected:
     bool hasRows;
 
 public:
+    typedef enum {
+        Append = QIODevice::Append,
+        Truncate = QIODevice::Truncate
+    } OpenMode;
+
     /** Create CSV file writer. Number of columns is set to 0. */
     QCSVWriter();
 
@@ -45,13 +50,13 @@ public:
 
       If file does not exist, new one is created,
       if file exists it is trucanted. */
-    bool open();
+    bool open(OpenMode mode = Truncate);
 
     /** Open CSV file for writing.
 
       If file does not exist, new one is created,
       if file exists it is trucanted. */
-    bool open(const QString &fileName);
+    bool open(const QString &fileName, OpenMode = Truncate);
 
     /** Set cells separator, defaults to ','. */
     void setCellSeparator(const QChar separator) {

@@ -31,16 +31,18 @@ QString QCSVWriter::errorString() const
     return file.errorString();
 }
 
-bool QCSVWriter::open()
+bool QCSVWriter::open(OpenMode mode)
 {
-    hasRows = false;
-    return file.open(QFile::WriteOnly | QFile::Truncate);
+    bool ret(file.open(QFile::WriteOnly | QFile::OpenMode(mode)));
+    if (ret)
+        hasRows = (file.size() != 0);
+    return ret;
 }
 
-bool QCSVWriter::open(const QString &fileName)
+bool QCSVWriter::open(const QString &fileName, OpenMode mode)
 {
     setFileName(fileName);
-    return open();
+    return open(mode);
 }
 
 void QCSVWriter::setDateTimeFormat(const QString &format)
