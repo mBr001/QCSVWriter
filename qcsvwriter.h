@@ -43,8 +43,8 @@ public:
     void close();
 
     QFile::FileError error() const;
-
     QString errorString() const;
+    bool flush();
 
     /** Open CSV file for writing.
 

@@ -31,6 +31,11 @@ QString QCSVWriter::errorString() const
     return file.errorString();
 }
 
+bool QCSVWriter::flush()
+{
+    return file.flush();
+}
+
 bool QCSVWriter::open(OpenMode mode)
 {
     bool ret(file.open(QFile::WriteOnly | QFile::OpenMode(mode)));
